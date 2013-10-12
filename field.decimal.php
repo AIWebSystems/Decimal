@@ -35,20 +35,23 @@ class Field_decimal extends AbstractField
 	 */
 	public function pre_save()
 	{
+		// Get ceiling and floot
+		$max_value = $this->getParameter('max_value', false);
+		$min_value = $this->getParameter('min_value', false);
 
 		// To High?
-		if ( isset($this->getParameter('max_value')) and strlen($this->getParameter('max_value')) > 0 and $this->input > $this->getParameter('max_value'))
+		if ($max_value and $max_value > 0 and $this->input > $max_value)
 		{
-			return $this->getParameter('max_value');
+			return $max_value;
 		}
 
 		// To Low?
-		if ( isset($this->getParameter('min_value')) and strlen($this->getParameter('min_value')) > 0 and $this->input < $this->getParameter('min_value'))
+		if ($min_value and $min_value > 0 and $this->input < $min_value)
 		{
-			return $this->getParameter('min_value');
+			return $min_value;
 		}
 
-		return $this->prep($this->input, $this->getParameter('decimal_places'));
+		return $this->prep();
 	}
 
 	// --------------------------------------------------------------------------
@@ -126,8 +129,8 @@ class Field_decimal extends AbstractField
 	 * @param	int
 	 * @return	float
 	 */
-	private function prep($value, $decimals = 0)
+	private function prep()
 	{
-		return number_format((float) str_replace(',', '', $value), (int) $decimals, '.', false);
+		return number_format((float) str_replace(',', '', $this->value), (int) $this->getParameter('decimals', 0), '.', false);
 	}
 }
