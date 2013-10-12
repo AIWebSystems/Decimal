@@ -1,5 +1,7 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+use Pyro\Module\Streams_core\Core\Field\AbstractField;
+
 /**
  * Decimal Field Type
  *
@@ -7,7 +9,7 @@
  * @copyright	Copyright (c) 208 - 2012, AI Web Systems, Inc.
  * @link		http://aiwebsystems.com
  */
-class Field_decimal
+class Field_decimal extends AbstractField
 {
 	public $field_type_name			= 'Decimal';
 
@@ -31,22 +33,22 @@ class Field_decimal
 	 * @param	object
 	 * @return	string
 	 */
-	public function pre_save($input, $field)
+	public function pre_save()
 	{
 
 		// To High?
-		if ( isset($field->field_data['max_value']) and strlen($field->field_data['max_value']) > 0 and $input > $field->field_data['max_value'])
+		if ( isset($this->getParameter('max_value')) and strlen($this->getParameter('max_value')) > 0 and $this->input > $this->getParameter('max_value'))
 		{
-			return $field->field_data['max_value'];
+			return $this->getParameter('max_value');
 		}
 
 		// To Low?
-		if ( isset($field->field_data['min_value']) and strlen($field->field_data['min_value']) > 0 and $input < $field->field_data['min_value'])
+		if ( isset($this->getParameter('min_value')) and strlen($this->getParameter('min_value')) > 0 and $this->input < $this->getParameter('min_value'))
 		{
-			return $field->field_data['min_value'];
+			return $this->getParameter('min_value');
 		}
 
-		return $this->prep($input, $field->field_data['decimal_places']);
+		return $this->prep($this->input, $this->getParameter('decimal_places'));
 	}
 
 	// --------------------------------------------------------------------------
@@ -59,9 +61,9 @@ class Field_decimal
 	 * @param	array
 	 * @return	float
 	 */
-	public function pre_output($input, $data)
+	public function pre_output()
 	{
-		return $this->prep($input, $data['decimal_places']);
+		return $this->prep($this->input, $this->getParameter('decimal_places'));
 	}
 
 	// --------------------------------------------------------------------------
@@ -75,11 +77,11 @@ class Field_decimal
 	 * @param	object
 	 * @return	string
 	 */
-	public function form_output($data, $id = false, $field)
+	public function form_output()
 	{
-		$options['name'] 	= $data['form_slug'];
-		$options['id']		= $data['form_slug'];
-		$options['value']	= (!empty($data['value'])) ? $this->prep($data['value'], $field->field_data['decimal_places']) : $this->prep($field->field_data['default_value'], $field->field_data['decimal_places']);
+		$options['name'] 	= $this->form_slug;
+		$options['id']		= $this->form_slug;
+		$options['value']	= (!empty($this->value)) ? $this->prep($this->value, $this->getParameter('decimal_places')) : $this->prep($this->getParameter('default_value'), $this->getParameter('decimal_places'));
 		
 		return form_input($options);
 	}
@@ -89,7 +91,7 @@ class Field_decimal
 	 *
 	 * @return	string
 	 */
-	public function param_decimal_places( $value = 0 )
+	public function param_decimal_places($value = 0)
 	{
 		return form_input('decimal_places', $value);
 	}
@@ -99,7 +101,7 @@ class Field_decimal
 	 *
 	 * @return	string
 	 */
-	public function param_min_value( $value = null )
+	public function param_min_value($value = null)
 	{
 		return form_input('min_value', $value);
 	}
@@ -109,7 +111,7 @@ class Field_decimal
 	 *
 	 * @return	string
 	 */
-	public function param_max_value( $value = null )
+	public function param_max_value($value = null)
 	{
 		return form_input('max_value', $value);
 	}
@@ -128,5 +130,4 @@ class Field_decimal
 	{
 		return number_format((float) str_replace(',', '', $value), (int) $decimals, '.', false);
 	}
-
-}// eof field.cc_number.php
+}
