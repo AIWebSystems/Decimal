@@ -85,6 +85,7 @@ class Field_decimal extends AbstractField
 		$options['name'] 	= $this->form_slug;
 		$options['id']		= $this->form_slug;
 		$options['value']	= (!empty($this->value)) ? $this->prep($this->value, $this->getParameter('decimal_places')) : $this->prep($this->getParameter('default_value'), $this->getParameter('decimal_places'));
+		$options['class']	= 'form-control';
 		
 		return form_input($options);
 	}
