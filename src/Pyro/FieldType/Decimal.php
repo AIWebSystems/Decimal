@@ -9,22 +9,28 @@ use Pyro\Module\Streams_core\Core\Field\AbstractField;
  * @copyright	Copyright (c) 208 - 2012, AI Web Systems, Inc.
  * @link		http://aiwebsystems.com
  */
-class Field_decimal extends AbstractField
+class Decimal extends AbstractField
 {
-	public $field_type_name			= 'Decimal';
+	public $field_type_name = 'Decimal';
 
-	public $field_type_slug			= 'decimal';
+	public $field_type_slug = 'decimal';
 	
-	public $db_col_type				= 'float';
+	public $db_col_type = 'float';
 
-	public $version					= '1.2';
+	public $version = '1.2';
 
-	public $custom_parameters		= array('decimal_places', 'default_value', 'min_value', 'max_value');
+	public $custom_parameters = array(
+		'decimal_places',
+		'default_value',
+		'min_value',
+		'max_value'
+		);
 
-	public $author					= array('name'=>'Ryan Thompson - AI Web Systems, Inc.', 'url'=>'http://aiwebsystems.com');
+	public $author = array(
+		'name'=>'Ryan Thompson - AI Web Systems, Inc.',
+		'url'=>'http://aiwebsystems.com'
+		);
 	
-	// --------------------------------------------------------------------------
-
 	/**
 	 * Process before saving to database
 	 *
@@ -33,7 +39,7 @@ class Field_decimal extends AbstractField
 	 * @param	object
 	 * @return	string
 	 */
-	public function pre_save()
+	public function preSave()
 	{
 		// Get ceiling and floot
 		$max_value = $this->getParameter('max_value', false);
@@ -54,8 +60,6 @@ class Field_decimal extends AbstractField
 		return $this->prep();
 	}
 
-	// --------------------------------------------------------------------------
-
 	/**
 	 * Process before outputting
 	 *
@@ -64,12 +68,10 @@ class Field_decimal extends AbstractField
 	 * @param	array
 	 * @return	float
 	 */
-	public function pre_output()
+	public function preOutput()
 	{
 		return $this->prep($this->input, $this->getParameter('decimal_places'));
 	}
-
-	// --------------------------------------------------------------------------
 
 	/**
 	 * Output the form input
@@ -80,7 +82,7 @@ class Field_decimal extends AbstractField
 	 * @param	object
 	 * @return	string
 	 */
-	public function form_output()
+	public function formOutput()
 	{
 		$options['name'] 	= $this->form_slug;
 		$options['id']		= $this->form_slug;
@@ -95,7 +97,7 @@ class Field_decimal extends AbstractField
 	 *
 	 * @return	string
 	 */
-	public function param_decimal_places($value = 0)
+	public function paramDecimalPlaces($value = 0)
 	{
 		return form_input('decimal_places', $value);
 	}
@@ -105,7 +107,7 @@ class Field_decimal extends AbstractField
 	 *
 	 * @return	string
 	 */
-	public function param_min_value($value = null)
+	public function paramMinValue($value = null)
 	{
 		return form_input('min_value', $value);
 	}
@@ -115,12 +117,10 @@ class Field_decimal extends AbstractField
 	 *
 	 * @return	string
 	 */
-	public function param_max_value($value = null)
+	public function paramMaxValue($value = null)
 	{
 		return form_input('max_value', $value);
 	}
-
-	// --------------------------------------------------------------------------
 
 	/**
 	 * Strip it down to it's knickers
