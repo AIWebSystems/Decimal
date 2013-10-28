@@ -68,7 +68,7 @@ class Decimal extends AbstractField
 	 * @param	array
 	 * @return	float
 	 */
-	public function preOutput()
+	public function stringOutput()
 	{
 		return $this->prep($this->input, $this->getParameter('decimal_places'));
 	}
@@ -82,7 +82,7 @@ class Decimal extends AbstractField
 	 * @param	object
 	 * @return	string
 	 */
-	public function formOutput()
+	public function formInput()
 	{
 		$options['name'] 	= $this->form_slug;
 		$options['id']		= $this->form_slug;
