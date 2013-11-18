@@ -1,6 +1,6 @@
 <?php namespace Pyro\FieldType;
 
-use Pyro\Module\Streams_core\Core\Field\AbstractField;
+use Pyro\Module\Streams_core\AbstractFieldType;
 
 /**
  * Decimal Field Type
@@ -9,7 +9,7 @@ use Pyro\Module\Streams_core\Core\Field\AbstractField;
  * @copyright	Copyright (c) 208 - 2012, AI Web Systems, Inc.
  * @link		http://aiwebsystems.com
  */
-class Decimal extends AbstractField
+class Decimal extends AbstractFieldType
 {
 	public $field_type_name = 'Decimal';
 
