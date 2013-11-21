@@ -46,13 +46,13 @@ class Decimal extends AbstractFieldType
 		$min_value = $this->getParameter('min_value', false);
 
 		// To High?
-		if ($max_value and $max_value > 0 and $this->input > $max_value)
+		if ($max_value and $max_value > 0 and $this->value > $max_value)
 		{
 			return $max_value;
 		}
 
 		// To Low?
-		if ($min_value and $min_value > 0 and $this->input < $min_value)
+		if ($min_value and $min_value > 0 and $this->value < $min_value)
 		{
 			return $min_value;
 		}
@@ -70,7 +70,7 @@ class Decimal extends AbstractFieldType
 	 */
 	public function stringOutput()
 	{
-		return $this->prep($this->input, $this->getParameter('decimal_places'));
+		return $this->prep($this->value, $this->getParameter('decimal_places'));
 	}
 
 	/**
