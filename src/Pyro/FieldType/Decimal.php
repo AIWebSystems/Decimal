@@ -130,8 +130,8 @@ class Decimal extends AbstractFieldType
 	 * @param	int
 	 * @return	float
 	 */
-	private function prep()
+	protected function prep()
 	{
-		return number_format((float) str_replace(',', '', $this->value), (int) $this->getParameter('decimal_places', 0), '.', false);
+		return number_format(str_replace(',', '', $this->value), $this->getParameter('decimal_places', 0));
 	}
 }
