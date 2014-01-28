@@ -57,7 +57,7 @@ class Decimal extends AbstractFieldType
 			return $min_value;
 		}
 
-		return $this->prep();
+        return $this->prep(false);
 	}
 
 	/**
@@ -130,8 +130,8 @@ class Decimal extends AbstractFieldType
 	 * @param	int
 	 * @return	float
 	 */
-	protected function prep()
+	protected function prep($thousands = false)
 	{
-		return number_format(str_replace(',', '', $this->value), $this->getParameter('decimal_places', 0));
+		return number_format((double) $this->value, $this->getParameter('decimal_places', 0), '.', $thousands ? ',' : '');
 	}
 }
