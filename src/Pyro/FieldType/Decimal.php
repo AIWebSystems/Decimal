@@ -15,7 +15,7 @@ class Decimal extends AbstractFieldType
 
     public $field_type_slug = 'decimal';
     
-    public $db_col_type = 'float';
+    public $db_col_type = 'double';
 
     public $version = '1.2';
 
