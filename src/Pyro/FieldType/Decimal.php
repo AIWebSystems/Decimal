@@ -57,7 +57,7 @@ class Decimal extends AbstractFieldType
             return $min_value;
         }
 
-        return $this->prep();
+        return round($this->value, $this->getParameter('decimal_places', 0));
     }
 
     /**
@@ -70,7 +70,7 @@ class Decimal extends AbstractFieldType
      */
     public function stringOutput()
     {
-        return $this->prep($this->value, $this->getParameter('decimal_places'));
+        return round($this->value, $this->getParameter('decimal_places', 0));
     }
 
     /**
@@ -86,7 +86,7 @@ class Decimal extends AbstractFieldType
     {
         $options['name']     = $this->form_slug;
         $options['id']        = $this->form_slug;
-        $options['value']    = (!empty($this->value)) ? $this->prep($this->value, $this->getParameter('decimal_places')) : $this->prep($this->getParameter('default_value'), $this->getParameter('decimal_places'));
+        $options['value']    = $this->value;
         $options['class']    = 'form-control';
         
         return form_input($options);
@@ -120,18 +120,5 @@ class Decimal extends AbstractFieldType
     public function paramMaxValue($value = null)
     {
         return form_input('max_value', $value);
-    }
-
-    /**
-     * Strip it down to it's knickers
-     *
-     * @access    public
-     * @param    float
-     * @param    int
-     * @return    float
-     */
-    protected function prep()
-    {
-        return number_format(str_replace(',', '', $this->value), $this->getParameter('decimal_places', 0));
     }
 }
