@@ -1,6 +1,4 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
 
-$lang['streams:decimal.name']                         = 'Decimal';
-$lang['streams:decimal.decimal_places']                = 'Decimal Places';
-$lang['streams:decimal.min_value']                    = 'Min Value';
-$lang['streams:decimal.max_value']                    = 'Max Value';
+$lang['streams:decimal.name']      = 'Decimal';
+$lang['streams:decimal.places']    = 'Decimal Places';

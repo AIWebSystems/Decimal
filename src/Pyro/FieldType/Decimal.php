@@ -4,121 +4,86 @@ use Pyro\Module\Streams\FieldType\FieldTypeAbstract;
 
 /**
  * Decimal Field Type
- *
  * @author        Ryan Thompson - AI Web Systems, Inc.
  * @copyright    Copyright (c) 208 - 2012, AI Web Systems, Inc.
  * @link        http://aiwebsystems.com
  */
 class Decimal extends FieldTypeAbstract
 {
-    public $field_type_name = 'Decimal';
-
+    /**
+     * Field type slug
+     * @var string
+     */
     public $field_type_slug = 'decimal';
-    
-    public $db_col_type = 'double';
 
+    /**
+     * Database column type
+     * @var bool
+     */
+    public $db_col_type = false;
+
+    /**
+     * Version
+     * @var string
+     */
     public $version = '1.2';
 
+    /**
+     * Custom parameters
+     * @var array
+     */
     public $custom_parameters = array(
-        'decimal_places',
-        'default_value',
-        'min_value',
-        'max_value'
-        );
+        'total',
+        'places'
+    );
 
+    /**
+     * Author
+     * @var array
+     */
     public $author = array(
-        'name'=>'Ryan Thompson - AI Web Systems, Inc.',
-        'url'=>'http://aiwebsystems.com'
+        'name' => 'Ryan Thompson - AI Web Systems, Inc.',
+        'url'  => 'http://www.aiwebsystems.com/'
+    );
+
+    /**
+     * Places (from Laravel's decimal(name, total, PLACES)
+     * @return    string
+     */
+    public function paramPlaces($value = 0)
+    {
+        return form_input('places', $value);
+    }
+
+    /**
+     * Total (from Laravel's decimal(name, TOTAL, places)
+     * @return    string
+     */
+    public function paramTotal($value = 0)
+    {
+        return form_input('total', $value);
+    }
+
+    /**
+     * Field assignment construct
+     * @return void
+     */
+    public function fieldAssignmentConstruct($schema)
+    {
+        // Get some variables
+        $instance = $this;
+        $table    = $this->getStream()->getTableName();
+
+        // Create a decimal column
+        $schema->table(
+            $table,
+            function ($table) use ($instance) {
+                $table->decimal(
+                    $this->getColumnName(),
+                    $instance->getParameter('total', 10),
+                    $instance->getParameter('places', 2)
+                );
+            }
         );
-    
-    /**
-     * Process before saving to database
-     *
-     * @access    public
-     * @param    float
-     * @param    object
-     * @return    string
-     */
-    public function preSave()
-    {
-        // Get ceiling and floot
-        $max_value = $this->getParameter('max_value', false);
-        $min_value = $this->getParameter('min_value', false);
-
-        // To High?
-        if ($max_value and $max_value > 0 and $this->value > $max_value)
-        {
-            return $max_value;
-        }
-
-        // To Low?
-        if ($min_value and $min_value > 0 and $this->value < $min_value)
-        {
-            return $min_value;
-        }
-
-        return round($this->value, $this->getParameter('decimal_places', 0));
-    }
-
-    /**
-     * Process before outputting
-     *
-     * @access    public
-     * @param    float
-     * @param    array
-     * @return    float
-     */
-    public function stringOutput()
-    {
-        return round($this->value, $this->getParameter('decimal_places', 0));
-    }
-
-    /**
-     * Output the form input
-     *
-     * @access    public
-     * @param    array
-     * @param    int
-     * @param    object
-     * @return    string
-     */
-    public function formInput()
-    {
-        $options['name']     = $this->form_slug;
-        $options['id']        = $this->form_slug;
-        $options['value']    = $this->value;
-        $options['class']    = 'form-control';
-        
-        return form_input($options);
-    }
-
-    /**
-     * How many decimals do you want to maintain?
-     *
-     * @return    string
-     */
-    public function paramDecimalPlaces($value = 0)
-    {
-        return form_input('decimal_places', $value);
-    }
-
-    /**
-     * Min value?
-     *
-     * @return    string
-     */
-    public function paramMinValue($value = null)
-    {
-        return form_input('min_value', $value);
-    }
-
-    /**
-     * Max value?
-     *
-     * @return    string
-     */
-    public function paramMaxValue($value = null)
-    {
-        return form_input('max_value', $value);
     }
 }
