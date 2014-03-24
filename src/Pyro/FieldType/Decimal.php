@@ -47,6 +47,16 @@ class Decimal extends FieldTypeAbstract
     );
 
     /**
+     * Pre save
+     *
+     * @return mixed
+     */
+    public function preSave()
+    {
+        return preg_replace('/[^0-9.]*/', '', $this->value);
+    }
+
+    /**
      * Places (from Laravel's decimal(name, total, PLACES)
      * @return    string
      */
