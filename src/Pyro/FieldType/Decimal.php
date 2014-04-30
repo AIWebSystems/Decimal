@@ -53,7 +53,11 @@ class Decimal extends FieldTypeAbstract
      */
     public function preSave()
     {
-        return preg_replace('/[^0-9.]*/', '', $this->value);
+        if (is_numeric($this->value)) {
+            return preg_replace('/[^0-9.]*/', '', $this->value);
+        }
+
+        return null;
     }
 
     /**
